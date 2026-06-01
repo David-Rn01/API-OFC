@@ -1,5 +1,6 @@
 package io.github.David_Rn01.API_OFC.controller;
 
+import io.github.David_Rn01.API_OFC.dto.LoginDTO;
 import io.github.David_Rn01.API_OFC.dto.MotoristaDTO;
 import io.github.David_Rn01.API_OFC.dto.MotoristaRespostaDTO;
 import io.github.David_Rn01.API_OFC.services.MotoristaService;
@@ -23,6 +24,16 @@ public class MotoristaController {
         try{
             MotoristaRespostaDTO motorista = motoristaService.cadastrar(motoristaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(motorista);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
+        try{
+            motoristaService.Login(loginDTO);
+            return ResponseEntity.ok("Acesso permitido");
         } catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

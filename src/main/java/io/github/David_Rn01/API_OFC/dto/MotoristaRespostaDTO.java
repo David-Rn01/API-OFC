@@ -12,5 +12,4 @@ public class MotoristaRespostaDTO {
     private String numeroCelular;
     private String carteiraConducao;
     private String nomeCidade;
-    private String ModeloVeiculo;
 }

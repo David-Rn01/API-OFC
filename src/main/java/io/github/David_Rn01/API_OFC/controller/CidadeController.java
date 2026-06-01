@@ -18,7 +18,7 @@ public class CidadeController {
     public ResponseEntity<?> cadastrar(@RequestBody Cidade cidade){
         try{
             Cidade novaCidade = cidadeService.cadastrarCidade(cidade);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Cidade cadastrada");
+            return ResponseEntity.status(HttpStatus.CREATED).body(novaCidade);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

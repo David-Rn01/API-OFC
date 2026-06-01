@@ -22,7 +22,7 @@ public class FaculdadeController {
     public ResponseEntity<?> cadastrar(@RequestBody FaculdadeDTO dto){
         try{
             Faculdade novaFaculade = faculdadeService.cadastrar(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Faculdade cadastrada");
+            return ResponseEntity.status(HttpStatus.CREATED).body(novaFaculade);
         } catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

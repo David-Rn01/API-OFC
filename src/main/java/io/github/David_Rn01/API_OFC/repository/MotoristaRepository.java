@@ -8,5 +8,7 @@ import java.util.UUID;
 
 public interface MotoristaRepository extends JpaRepository<Motorista, String> {
     Optional<Motorista> findByNomeIgnoreCase(String nome);
+    Optional<Motorista> findByCpf(String spf);
     boolean existsByCarteiraConducao(String number);
+    boolean existsByCpf(String cpf);
 }

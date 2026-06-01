@@ -2,6 +2,7 @@ package io.github.David_Rn01.API_OFC.services;
 
 import io.github.David_Rn01.API_OFC.dto.AlunoDTO;
 import io.github.David_Rn01.API_OFC.dto.AlunoRespostaDTO;
+import io.github.David_Rn01.API_OFC.dto.LoginDTO;
 import io.github.David_Rn01.API_OFC.model.Aluno;
 import io.github.David_Rn01.API_OFC.model.Cidade;
 import io.github.David_Rn01.API_OFC.model.Faculdade;
@@ -52,6 +53,24 @@ public class AlunoService {
         Aluno alunoSalvo = alunoRepo.save(aluno);
 
         return transformarDTO(alunoSalvo);
+    }
+
+    public void excluir(String cpf){
+        if (!alunoRepo.existsByCpf(cpf)){
+            throw new IllegalArgumentException("Aluno não encontrado");
+        }
+
+        alunoRepo.deleteById(cpf);
+    }
+
+    public boolean login(LoginDTO loginDTO){
+        Aluno aluno = alunoRepo.findByCpf(loginDTO.getCpf()).orElseThrow(()-> new IllegalArgumentException("Aluno não encontrado"));
+
+        if (aluno == null) {
+            return false;
+        }
+
+        return passwordEncoder.matches(loginDTO.getSenha(), aluno.getSenha());
     }
 
     private void validar(AlunoDTO alunoDTO){

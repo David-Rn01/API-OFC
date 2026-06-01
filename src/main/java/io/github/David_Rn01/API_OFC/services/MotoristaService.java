@@ -1,5 +1,6 @@
 package io.github.David_Rn01.API_OFC.services;
 
+import io.github.David_Rn01.API_OFC.dto.LoginDTO;
 import io.github.David_Rn01.API_OFC.dto.MotoristaDTO;
 import io.github.David_Rn01.API_OFC.dto.MotoristaRespostaDTO;
 import io.github.David_Rn01.API_OFC.model.Cidade;
@@ -30,9 +31,6 @@ public class MotoristaService {
     public MotoristaRespostaDTO cadastrar(MotoristaDTO motoristaDTO){
         validar(motoristaDTO);
 
-        Veiculo veiculo = veiculoRepository.findByModeloIgnoreCaseAndPlacaIgnoreCase(motoristaDTO.getModeloVeiculo(), motoristaDTO.getPlacaVeiculo())
-                .orElseThrow(() -> new IllegalArgumentException("Veiculo não encontrado"));
-
         Cidade cidade = cidadeRepository.findByNomeIgnoreCaseAndEstadoIgnoreCase(motoristaDTO.getNomeCidade(), motoristaDTO.getNomeEstado())
                 .orElseThrow(() -> new IllegalArgumentException("Cidade não encontrada"));
 
@@ -44,13 +42,21 @@ public class MotoristaService {
                 motoristaDTO.getNumeroCelular(),
                 senhaCriptografada,
                 motoristaDTO.getCarteiraConducao(),
-                cidade,
-                veiculo
+                cidade
         );
 
         motoristaRepository.save(motorista);
 
         return converterResposta(motoristaDTO);
+    }
+
+    public boolean Login(LoginDTO loginDTO){
+        Motorista motorista = motoristaRepository.findByCpf(loginDTO.getCpf()).orElseThrow(() -> new IllegalArgumentException("Motorista não encontrado"));
+        if (motorista == null) {
+            return false;
+        }
+
+        return passwordEncoder.matches(loginDTO.getSenha(), motorista.getSenha());
     }
 
     //Terminar as validações
@@ -69,13 +75,20 @@ public class MotoristaService {
         }
     }
 
+    private void excluir(String cpf){
+        if (!motoristaRepository.existsByCpf(cpf)){
+            throw new IllegalArgumentException("Motorista inexistente");
+        }
+
+        motoristaRepository.deleteById(cpf);
+    }
+
     private MotoristaRespostaDTO converterResposta(MotoristaDTO motoristaDTO){
         return new MotoristaRespostaDTO(
                 motoristaDTO.getNome(),
                 motoristaDTO.getNumeroCelular(),
                 motoristaDTO.getCarteiraConducao(),
-                motoristaDTO.getNomeCidade(),
-                motoristaDTO.getModeloVeiculo()
+                motoristaDTO.getNomeCidade()
         );
     }
 }

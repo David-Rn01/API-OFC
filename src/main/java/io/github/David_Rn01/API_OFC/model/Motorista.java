@@ -33,8 +33,4 @@ public class Motorista {
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
-
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id")
-    private Veiculo veiculo;
 }

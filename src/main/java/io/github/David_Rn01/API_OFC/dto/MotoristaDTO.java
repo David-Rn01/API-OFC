@@ -15,6 +15,4 @@ public class MotoristaDTO {
     private String carteiraConducao;
     private String nomeCidade;
     private String nomeEstado;
-    private String modeloVeiculo;
-    private String placaVeiculo;
 }

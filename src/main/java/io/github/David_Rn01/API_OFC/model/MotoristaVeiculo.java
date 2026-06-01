@@ -6,31 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "presenca")
+@Table(name = "motorista_veiculo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Presenca {
+public class MotoristaVeiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "aluno_cpf")
-    private Aluno aluno;
+    @JoinColumn(name = "motorista_cpf")
+    private Motorista motorista;
 
     @ManyToOne
-    @JoinColumn(name = "viage_id")
-    private Viagem viagem;
+    @JoinColumn(name = "veiculo_id")
+    private Veiculo veiculo;
 
     @Column
-    private Presente presente;
-
-    @Column
-    private LocalDateTime confirmadoEm;
+    private LocalDate dataAtribuicao;
 }
